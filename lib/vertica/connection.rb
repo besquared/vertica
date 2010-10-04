@@ -81,12 +81,12 @@ module Vertica
       !opened?
     end
     
-    def query(query_string)
-      raise ArgumentError.new("Query string cannot be blank or empty.") if query_string.nil? || query_string.empty?
+    def execute(query)
+      raise ArgumentError.new("Query cannot be blank or empty.") if query.nil? || query.empty?
       raise_if_not_open
       reset_result
 
-      Messages::Query.new(query_string).to_bytes(@conn)
+      Messages::Query.new(query).to_bytes(@conn)
       process(true)
     end
     
