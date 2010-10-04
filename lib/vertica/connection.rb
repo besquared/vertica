@@ -12,8 +12,9 @@ module Vertica
     attr_accessor :username
     attr_accessor :password
     attr_accessor :ssl
+    attr_accessor :skip_startup
     
-    def initialize(host, port, database, username, password, ssl)
+    def initialize(host, port, database, username, password, ssl, skip_startup)
       reset_values
       
       @host = host
@@ -22,10 +23,11 @@ module Vertica
       @username = username
       @password = password
       @ssl = ssl
-
+      @skip_startup = skip_startup
+      
       establish_connection
       
-      unless options[:skip_startup]
+      unless skip_startup
         Messages::Startup.new(@username, @database).to_bytes(@conn)
         process
       end
@@ -126,7 +128,7 @@ module Vertica
     end
 
     def self.cancel(existing_conn)
-      conn = new(existing_conn.options.merge(:skip_startup => true))
+      conn = new(@host, @port, @database, @username, @password, @ssl, @skip_startup)
       Messages::CancelRequest.new(existing_conn.backend_pid, existing_conn.backend_key).to_bytes(conn.send(:conn))
       Messages::Flush.new.to_bytes(conn.send(:conn))
       conn.close
