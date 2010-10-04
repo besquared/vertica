@@ -15,7 +15,7 @@ module Vertica
       establish_connection
       
       unless options[:skip_startup]
-        Messages::Startup.new(@options[:user], @options[:database]).to_bytes(@conn)
+        Messages::Startup.new(@options[:username], @options[:database]).to_bytes(@conn)
         process
       end
     end
@@ -149,7 +149,7 @@ module Vertica
         case message
         when Messages::Authentication
           if message.code != Messages::Authentication::OK
-            Messages::Password.new(@options[:password], message.code, {:user => @options[:user], :salt => message.salt}).to_bytes(@conn)
+            Messages::Password.new(@options[:password], message.code, {:username => @options[:username], :salt => message.salt}).to_bytes(@conn)
           end
         when Messages::BackendKeyData
           @backend_pid = message.pid

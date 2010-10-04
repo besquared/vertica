@@ -12,7 +12,7 @@ module Vertica
         when Messages::Authentication::CRYPT_PASSWORD
           @password = password.crypt(options[:salt])
         when Messages::Authentication::MD5_PASSWORD
-          @password = Digest::MD5.hexdigest(password + options[:user])
+          @password = Digest::MD5.hexdigest(password + options[:username])
           @password = Digest::MD5.hexdigest(m + options[:salt])
           @password = 'md5' + @password
         else
