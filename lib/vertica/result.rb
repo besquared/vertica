@@ -36,5 +36,11 @@ module Vertica
     def last
       self[length - 1]
     end
+    
+    def each
+      rows.each do |row|
+        yield row if block_given?
+      end
+    end
   end
 end
