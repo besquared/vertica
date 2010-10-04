@@ -1,13 +1,10 @@
 module Vertica
   class Result
+    include Enumerable
     
     def initialize(field_descriptions, field_values)
       @field_descriptions = field_descriptions
       @field_values = field_values
-    end
-    
-    def row_count
-      @row_count ||= @field_values.length
     end
     
     def columns
@@ -15,7 +12,7 @@ module Vertica
     end
     
     def rows
-      @field_values.map do |fv|
+      @rows ||= @field_values.map do |fv|
         index = 0
         fv.map do |f|
           index += 1
@@ -24,5 +21,20 @@ module Vertica
       end
     end
     
+    def length
+      @length ||= @field_values.length
+    end
+    
+    def [](index)
+      rows[index]
+    end
+    
+    def first
+      self[0]
+    end
+    
+    def last
+      self[length - 1]
+    end
   end
 end
