@@ -5,17 +5,28 @@ require 'vertica/messages/message'
 require 'openssl/ssl'
 
 module Vertica
-  
   class Connection
+    attr_accessor :host
+    attr_accessor :port
+    attr_accessor :database
+    attr_accessor :username
+    attr_accessor :password
+    attr_accessor :ssl
     
-    def initialize(options = {})
+    def initialize(host, port, database, username, password, ssl)
       reset_values
+      
+      @host = host
+      @port = port
+      @database = database
+      @username = username
+      @password = password
+      @ssl = ssl
 
-      @options = options
       establish_connection
       
       unless options[:skip_startup]
-        Messages::Startup.new(@options[:username], @options[:database]).to_bytes(@conn)
+        Messages::Startup.new(@username, @database).to_bytes(@conn)
         process
       end
     end
@@ -34,10 +45,6 @@ module Vertica
       close if opened?
       reset_values
       establish_connection
-    end
-
-    def options
-      @options.dup
     end
     
     def transaction_status
@@ -128,9 +135,9 @@ module Vertica
     protected
     
     def establish_connection
-      @conn = VerticaSocket.new(@options[:host], @options[:port].to_s)
+      @conn = VerticaSocket.new(@host, @port.to_s)
       
-      if @options[:ssl]
+      if @ssl
         Messages::SslRequest.new.to_bytes(@conn)
         if @conn.read_byte == ?S
           @conn = OpenSSL::SSL::SSLSocket.new(@conn, OpenSSL::SSL::SSLContext.new)
@@ -149,7 +156,7 @@ module Vertica
         case message
         when Messages::Authentication
           if message.code != Messages::Authentication::OK
-            Messages::Password.new(@options[:password], message.code, {:username => @options[:username], :salt => message.salt}).to_bytes(@conn)
+            Messages::Password.new(@password, message.code, {:username => @username, :salt => message.salt}).to_bytes(@conn)
           end
         when Messages::BackendKeyData
           @backend_pid = message.pid
