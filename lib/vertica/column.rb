@@ -45,7 +45,7 @@ module Vertica
       :timestamp_tz   => lambda { |s| s.nil? ? nil : DateTime.parse(s, true) },
       :interval       => nil,
       :time_tz        => lambda { |s| s.nil? ? nil : Time.parse(s) },
-      :numberic       => lambda { |s| s.to_d },
+      :numeric        => lambda { |s| s.to_d },
       :bytea          => nil,
       :rle_tuple      => nil
     }
