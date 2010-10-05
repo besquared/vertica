@@ -6,6 +6,7 @@ require 'openssl/ssl'
 
 module Vertica
   class Connection
+    attr_accessor :conn
     attr_accessor :host
     attr_accessor :port
     attr_accessor :database
@@ -247,10 +248,5 @@ module Vertica
         nil
       end
     end
-
-    def conn
-      @conn
-    end
-
   end
 end

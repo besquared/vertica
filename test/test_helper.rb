@@ -5,10 +5,10 @@ require "vertica"
 class Test::Unit::TestCase
   
   TEST_CONNECTION_USER     = 'dbadmin'
-  TEST_CONNECTION_PASSWORD = 'cl3v3rcstore'
-  TEST_CONNECTION_HOST     = 'ec2-174-129-157-242.compute-1.amazonaws.com'
+  TEST_CONNECTION_PASSWORD = 'yamittome'
+  TEST_CONNECTION_HOST     = 'edb-001'
   TEST_CONNECTION_PORT     = 5433
-  TEST_CONNECTION_DATABASE = 'db'
+  TEST_CONNECTION_DATABASE = 'yamhouse'
 
   TEST_CONNECTION_HASH = {
     :user     => TEST_CONNECTION_USER,

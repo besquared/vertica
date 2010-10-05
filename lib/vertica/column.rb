@@ -23,7 +23,7 @@ module Vertica
       :timestamp_tz,
       :interval,
       :time_tz,
-      :numberic,
+      :numeric,
       :bytea,
       :rle_tuple
     ]

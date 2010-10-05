@@ -1,12 +1,12 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'rake/testtask'
+require 'spec/rake/spectask'
 
 load 'vertica.gemspec'
  
 Rake::GemPackageTask.new(VERTICA_SPEC) do |pkg|
-    pkg.need_tar = true
+  pkg.need_tar = true
 end
  
 task :default => "test"
@@ -16,15 +16,12 @@ task :clean do
   include FileUtils
   rm_rf 'pkg'
 end
- 
-desc "Run tests"
-Rake::TestTask.new("test") do |t|
-  t.libs << ["test", "ext"]
-  t.pattern = 'test/*_test.rb'
-  t.verbose = true
+
+Spec::Rake::SpecTask.new do |t|
   t.warning = true
+  t.rcov = false
 end
- 
+
 task :doc => [:rdoc]
 namespace :doc do
   Rake::RDocTask.new do |rdoc|
