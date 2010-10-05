@@ -135,7 +135,13 @@ module Vertica
       conn.close
     end
 
-    protected
+    class << self
+      def escape(str)
+        str.gsub("'","''").gsub("\\", "\\\\\\\\")
+      end
+    end
+    
+  protected
     
     def establish_connection
       @conn = VerticaSocket.new(@host, @port.to_s)
