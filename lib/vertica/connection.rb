@@ -135,10 +135,8 @@ module Vertica
       conn.close
     end
 
-    class << self
-      def escape(str)
-        str.gsub("'","''").gsub("\\", "\\\\\\\\")
-      end
+    def escape(str)
+      str.gsub("'","''").gsub("\\", "\\\\\\\\")
     end
     
   protected
