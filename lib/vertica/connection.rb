@@ -1,5 +1,7 @@
 require 'uri'
 require 'stringio'
+require 'vertica/notice'
+require 'vertica/notification'
 require 'vertica/vertica_socket'
 require 'vertica/messages/message'
 require 'openssl/ssl'
