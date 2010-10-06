@@ -16,6 +16,8 @@ module Vertica
     attr_accessor :password
     attr_accessor :ssl
     attr_accessor :skip_startup
+    attr_accessor :notices
+    attr_accessor :notifications
     
     def initialize(host, port, database, username, password, ssl, skip_startup)
       reset_values
