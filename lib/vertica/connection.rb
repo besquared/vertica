@@ -192,10 +192,10 @@ module Vertica
           :nothing
         when Messages::NoticeResponse
           message.notices.each do |notice|
-            @notices << ::Notice.new(notice[0], notice[1])
+            @notices << Vertica::Notice.new(notice[0], notice[1])
           end
         when Messages::NotificationResponse
-          @notifications << Notification.new(message.pid, message.condition, message.additional_info)        
+          @notifications << Vertica::Notification.new(message.pid, message.condition, message.additional_info)        
         when Messages::ParameterDescription
           :nothing
         when Messages::ParameterStatus
