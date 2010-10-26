@@ -226,6 +226,7 @@ module Vertica
     end
     
     def reset_values
+      reset_notices
       reset_notifications
       reset_result
       @parameters         = {}
@@ -233,6 +234,10 @@ module Vertica
       @backend_key        = nil
       @transaction_status = nil
       @conn               = nil
+    end
+    
+    def reset_notices
+      @notices = []
     end
     
     def reset_notifications
