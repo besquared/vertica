@@ -86,13 +86,13 @@ module Vertica
       !opened?
     end
     
-    def execute(query)
+    def execute(query, &block)
       raise ArgumentError.new("Query cannot be blank or empty.") if query.nil? || query.empty?
       raise_if_not_open
       reset_result
 
       Messages::Query.new(query).to_bytes(@conn)
-      process(true)
+      process(true, &block)
     end
     
     def prepare(name, query, params_count = 0)
@@ -160,7 +160,7 @@ module Vertica
       end      
     end
     
-    def process(return_result = false)
+    def process(return_result = false, &block)
       loop do
         message = Messages::BackendMessage.read(@conn)
 
@@ -187,7 +187,11 @@ module Vertica
         # when Messages::CopyOutResponse
         #   raise 'not done'
         when Messages::DataRow
-          @field_values << message.fields
+          if block_given?
+            yield message.fields.collect{|field| field[:value]}
+          else
+            @field_values << message.fields
+          end
         when Messages::EmptyQueryResponse
           break
         when Messages::ErrorResponse
