@@ -35,8 +35,8 @@ module Vertica
       :record         => nil,
       :unknown        => nil,
       :bool           => lambda { |s| s == 't' },
-      :in             => lambda { |s| s.to_i },
-      :float          => lambda { |s| s.to_f },
+      :in             => lambda { |s| s.nil? ? nil : s.to_i },
+      :float          => lambda { |s| s.nil? ? nil : s.to_f },
       :char           => nil,
       :varchar        => nil,
       :date           => lambda { |s| s.nil? ? nil : Date.new(*s.split("-").map{|x| x.to_i}) },
@@ -45,7 +45,7 @@ module Vertica
       :timestamp_tz   => lambda { |s| s.nil? ? nil : DateTime.parse(s, true) },
       :interval       => nil,
       :time_tz        => lambda { |s| s.nil? ? nil : Time.parse(s) },
-      :numeric        => lambda { |s| s.to_d },
+      :numeric        => lambda { |s| s.nil? ? nil : s.to_d },
       :bytea          => nil,
       :rle_tuple      => nil
     }
